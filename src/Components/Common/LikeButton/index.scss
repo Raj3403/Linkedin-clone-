@@ -1,0 +1,14 @@
+.like-container{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 10px;
+    cursor: pointer;
+
+    p{
+        font-family: system-ui, sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        color: rgb(0, 0 , 0.835);
+    }
+}   
