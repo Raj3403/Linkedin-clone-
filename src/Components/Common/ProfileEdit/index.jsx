@@ -23,7 +23,7 @@
         </div>
 
         <div className="profile-edit-inputs">
-          <label>Name</label>
+          <label>Name</label>     
           <input
             onChange={getInput}
             className="common-input"

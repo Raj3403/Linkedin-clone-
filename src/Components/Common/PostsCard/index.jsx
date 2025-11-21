@@ -34,8 +34,6 @@
 
 // export default PostsCard;
 
-
-
 // PostsCard.jsx
 import React, { useEffect, useState } from "react";
 import LikeButton from "../LikeButton";
@@ -70,7 +68,6 @@ function PostsCard({ posts, id }) {
       <p className="timestamp">{posts.timeStamp}</p>
       <p className="status">{posts.status}</p>
 
-      {/* ensure we pass whichever id exists for the post */}
       <LikeButton userId={currentUser?.id} postId={posts.postID || posts.id || posts.postID} />
     </div>
   );

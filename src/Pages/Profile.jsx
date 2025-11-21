@@ -130,7 +130,7 @@
         <div className="profile-card-section">
           <ProfileComponent currentUser={profileUser || (profileEmail === (currentUser?.email) ? currentUser : {})} />
         </div>
-
+{/* 
         <div className="profile-posts-section">
           <h3 style={{ marginTop: 16 }}>{profileUser?.name || profileEmail}'s posts</h3>
 
@@ -142,7 +142,7 @@
               return <PostsCard key={keyId} posts={posts} />;
             })
           )}
-        </div>
+        </div> */}
       </div>
     );
   }
