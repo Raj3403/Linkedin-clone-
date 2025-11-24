@@ -17,9 +17,10 @@ export default function Topbar() {
   let Navigate = useNavigate();
 
   const [showPopup, setShowPopup] = useState(false);
-  const goToRoute = (route) => {
-    Navigate(route);
-  };
+const goToRoute = (route, options) => {
+  Navigate(route, options);
+};
+
   return (
     <div className="topbar-main">
       <img className="linkedin-logo" src={linkedinLogo} alt="linkedinLogo" />
@@ -33,7 +34,12 @@ export default function Topbar() {
         <AiOutlineUserSwitch
           size={30}
           className="react-icon"
-          onClick={() => goToRoute("/Profile")}
+          onClick={() => goToRoute("/profile" , {
+            state:{
+              email:localStorage.getItem("userEmail") ,
+              id:localStorage.getItem("uid")
+            }
+          })}
         />
         <BsBriefcase size={30} className="react-icon" />
         <AiOutlineMessage size={30} className="react-icon" />

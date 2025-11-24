@@ -4,15 +4,33 @@
   import "./index.scss";
 
   export default function ProfileEdit({ onEdit, currentUser }) {
-    const [editInputs, seteditInputs] = useState(currentUser);
+ const [editInputs, seteditInputs] = useState({
+  name: currentUser?.name || "",
+  headline: currentUser?.headline || "",
+  country: currentUser?.country || "",
+  city: currentUser?.city || "",
+  company: currentUser?.company || "",
+  industry: currentUser?.industry || "",
+  college: currentUser?.college || "",
+  website: currentUser?.website || "",
+  aboutMe: currentUser?.aboutMe || "",
+  skills: currentUser?.skills || "",
+  id: currentUser?.id,
+  email: currentUser?.email,
+  userID: currentUser?.userID
+});
+
     const getInput = (event) => {
       let { name, value } = event.target;
       let input = { [name]: value };
+      console.log("user details" , input)
       seteditInputs({ ...editInputs, ...input });
     };
 
     const updateProfileData = async () => {
-      await editProfile(currentUser?.userID, editInputs);
+
+      console.log("userId----------------------------------------------------------" , currentUser )
+      await editProfile(currentUser?.id, editInputs);
       await onEdit();
     };
 
@@ -29,7 +47,7 @@
             className="common-input"
             placeholder="Name"
             name="name"
-            value={editInputs.name}
+            value={editInputs?.name}
           />
           <label>Headline</label>
           <input
@@ -37,7 +55,7 @@
             className="common-input"
             placeholder="Headline"
             name="headline"
-            value={editInputs.headline}
+            value={editInputs?.headline}
           />
           <label>Country</label>
           <input
@@ -45,7 +63,7 @@
             className="common-input"
             placeholder="Country"
             name="country"
-            value={editInputs.country}
+            value={editInputs?.country || ""}
           />
           <label>City</label>
           <input
@@ -53,7 +71,7 @@
             className="common-input"
             placeholder="City"
             name="city"
-            value={editInputs.city}
+            value={editInputs?.city || ""}
           />
           <label>Company</label>
           <input
@@ -61,7 +79,7 @@
             className="common-input"
             placeholder="Company"
             name="company"
-            value={editInputs.company}
+            value={editInputs?.company}
           />
           <label>Industry</label>
           <input
@@ -69,7 +87,7 @@
             className="common-input"
             placeholder="Industry"
             name="industry"
-            value={editInputs.industry}
+            value={editInputs?.industry}
           />
           <label>College</label>
           <input
@@ -77,7 +95,7 @@
             className="common-input"
             placeholder="College"
             name="college"
-            value={editInputs.college}
+            value={editInputs?.college}
           />
           <label>Website</label>
           <input
@@ -85,7 +103,7 @@
             className="common-input"
             placeholder="Website"
             name="website"
-            value={editInputs.website}
+            value={editInputs?.website}
           />
           <label>About Me</label>
           <textarea
@@ -94,7 +112,7 @@
             placeholder="AboutMe"
             rows={5}
             name="aboutMe"
-            value={editInputs.aboutMe}
+            value={editInputs?.aboutMe}
           />
           <label>Skills</label>
           <input
@@ -102,7 +120,7 @@
             className="common-input"
             placeholder="Skills"
             name="skills"
-            value={editInputs.skills}
+            value={editInputs?.skills}
           />
         </div>
         <div className="save-container">

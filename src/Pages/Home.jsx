@@ -18,9 +18,9 @@ function Home({ currentUser }) {
     });
   }, []);
   return loading ? <Loader /> : <HomeComponent currentUser={currentUser} />;
-  (<div>
-    <HomeComponent />
-  </div>)
+  // (<div>
+  //   <HomeComponent />
+  // </div>)
 }
 
 export default Home;

@@ -157,8 +157,8 @@ export default function PostStatus({ currentUser = {} }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [status, SetStatus] = useState("");
   const [allStatuses, setAllStatus] = useState([]);
-  const userEmail = userEmailFromStorage || currentUser.email || "";
-  const userName = currentUser.name || currentUser.displayName || userNameFromStorage || "Unknown User";
+  const userEmail = userEmailFromStorage || currentUser?.email || "";
+  const userName = currentUser?.name || currentUser?.displayName || userNameFromStorage || "Unknown User";
 
   const sendStatus = async () => {
     if (!status || status.trim() === "") {

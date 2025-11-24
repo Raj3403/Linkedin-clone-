@@ -10,17 +10,29 @@ import Loader from "../Components/Common/Loader/Loader";
 export default function Login() {
   const [loading , setLoading] = useState(true)
   let Navigate = useNavigate()
-  useEffect(() => {
-    onAuthStateChanged(auth , res => {
-      if(res?.accessToken){
-        Navigate('/home')
-      }
-       else{
-        // return <Loader/>
-        setLoading(false)
-      }
-    });
-  }, []);
+useEffect(() => {
+  const unsubscribe = onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      console.log("login data", user);
+      localStorage.setItem("uid", user.uid);
+      localStorage.setItem("userEmail", user.email);
+
+      const token = await user.getIdToken();
+      localStorage.setItem("accessToken", token);
+
+      setLoading(false); // user is logged in
+    } else {
+      // user logged out
+      localStorage.removeItem("uid");
+      localStorage.removeItem("userEmail");
+      localStorage.removeItem("accessToken");
+      setLoading(false);
+    }
+  });
+
+  return () => unsubscribe(); // clean up listener on unmount
+}, []);
+
   return loading? <Loader/> : <LoginComponent />;
 }
 

@@ -54,6 +54,9 @@ function PostsCard({ posts, id }) {
     const email = posts?.userEmail || posts?.email || "";
     if (email) localStorage.setItem("profileEmail", email);
 
+
+    console.log("text" , posts.userID , posts)
+
     // also pass in location state for immediate navigation
     navigate("/profile", {
       state: { id: posts?.userID || posts?.userId, email },

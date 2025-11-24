@@ -1,4 +1,4 @@
-import { uid } from "react-uid";
+import React from "react";
 
 // helpers/getUniqueId.js
 export const getUniqueId = () => {

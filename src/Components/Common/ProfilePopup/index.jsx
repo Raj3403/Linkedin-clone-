@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { onLogout } from "../../../api/AuthApi";
 import { useNavigate } from "react-router-dom";
 import { getCurrentUser } from "../../../api/FirestoreAPI";
@@ -18,7 +18,7 @@ export default function ProfilePopup() {
       <Button
         title="View Profile"
         onClick={() =>
-          navigate("/profile", { state: { id: currentUser?.userID } })
+          navigate("/profile", { state: { id: currentUser?.userID , email:currentUser.email } })
         }
       />
       <Button
