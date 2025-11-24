@@ -141,3 +141,20 @@ export const likePost = async (userId, postId) => {
     console.error("Error saving like:", err);
   }
 };
+
+
+export const getLikesByUser = (userId , postId , setliked  , setlikesCount) => {
+  try {
+    let likeQuery = query(likeRef , where('postId' , '==' , postId))
+    onSnapshot(likeQuery , (response) => {
+      let likes = response.docs.map((doc) => doc.data());
+      let likesCount = likes.length;
+
+      const isLiked = likes.some((like)=> like.id === userId )
+      setlikesCount(likesCount);
+      setliked(isLiked);
+    })
+  } catch (err) {
+    console.log(err);
+}
+}
