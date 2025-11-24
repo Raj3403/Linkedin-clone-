@@ -133,15 +133,6 @@ export const getSingleUser = (setCurrentUser, email) => {
 export const likePost = async (userId, postId) => {
   console.log("likePost called with:", { userId, postId });
 
-  // if (!userId) {
-  //   console.error("likePost: userId is missing. Aborting write.");
-  //   return;
-  // }
-  // if (!postId) {
-  //   console.error("likePost: postId is missing. Aborting write.");
-  //   return;
-  // }
-
   try {
     const docToLike = doc(likeRef, `${userId}_${postId}`);
     await setDoc(docToLike, { userId, postId, likedAt: new Date().toISOString() });
