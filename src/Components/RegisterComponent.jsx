@@ -26,7 +26,7 @@ export default function RegisterComponent() {
   };
 
   const googleSignIn = () => {
-    let res = GoogleSignInAPI();
+    let response = GoogleSignInAPI();
     navigate("/home");
   };
   return (

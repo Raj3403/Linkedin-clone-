@@ -68,19 +68,14 @@ export const getCurrentUser = (setCurrentUser) => {
     return;
   }
 
-  console.log("currmail" , currEmail)
-
-  console.log("raw localStorage value:", JSON.stringify(currEmail));
 
 
   const userQuery = query(userRef, where("email", "==", currEmail));
 
   return onSnapshot(userQuery, (response) => {
 
-    console.log("redp" , response.empty)
-    if (!response.empty) {
 
-      console.log("user" , response.docs[0].data)
+    if (!response.empty) {
       const userData = response.docs[0].data();
       setCurrentUser({ ...userData, id: response.docs[0].id });
     } else {
@@ -92,7 +87,6 @@ export const getCurrentUser = (setCurrentUser) => {
 
 export const editProfile = (userID, payLoad) => {
 
-  console.log("user----id" , userID)
   let userToEdit = doc(userRef, userID);
 
 
@@ -107,15 +101,12 @@ export const editProfile = (userID, payLoad) => {
 
 export const getSingleStatus = (setAllStatus, email) => {
 
-  console.log("userrId" , email)
   const singlePostQuery = query(postsRef, where("userEmail", "==", email));
 
 
-  console.log("single" , singlePostQuery.docs)
 
   onSnapshot(singlePostQuery, (response) => {
 
-    console.log("response" ,response.docs )
     setAllStatus(
       response.docs.map((docs) => {
 

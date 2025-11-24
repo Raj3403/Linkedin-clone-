@@ -23,13 +23,10 @@
     const getInput = (event) => {
       let { name, value } = event.target;
       let input = { [name]: value };
-      console.log("user details" , input)
       seteditInputs({ ...editInputs, ...input });
     };
 
     const updateProfileData = async () => {
-
-      console.log("userId----------------------------------------------------------" , currentUser )
       await editProfile(currentUser?.id, editInputs);
       await onEdit();
     };
