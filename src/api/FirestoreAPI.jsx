@@ -100,7 +100,7 @@ export const getSingleStatus = (setAllStatus, email) => {
   onSnapshot(singlePostQuery, (response) => {
     setAllStatus(
       response.docs.map((docs) => {
-        console.log("data", docs.data());
+        // console.log("data", docs.data());
         return { ...docs.data(), id: docs.id };
       })
     );

@@ -1,7 +1,8 @@
 import { storage } from "../firebaseConfig";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { editProfile } from "./FirestoreAPI";
 
-export const UploadImage = (file) => {
+export const UploadImage = (file, id) => {
   const profilePicsRef = ref(storage, `files/${file.name}`);
   const uploadTask = uploadBytesResumable(profilePicsRef, file);
 
@@ -18,7 +19,7 @@ export const UploadImage = (file) => {
     },
     () => {
       getDownloadURL(uploadTask.snapshot.ref).then((response) => {
-        console.log(response);
+        editProfile(id, { imageLink: response });
       });
     }
   );
