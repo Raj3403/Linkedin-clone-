@@ -8,6 +8,7 @@ import {
   query,
   where,
   setDoc,
+  deleteDoc,
 } from "firebase/firestore";
 import { toast } from "react-toastify";
 
@@ -15,6 +16,7 @@ let dbRef = collection(firestore, "posts");
 let postsRef = collection(firestore, "posts");
 let userRef = collection(firestore, "users");
 let likeRef = collection(firestore, "likes");
+let commentRef = collection(firestore, "comments");
 
 export const postStatus = (object) => {
   addDoc(dbRef, object)
@@ -59,7 +61,6 @@ export const postUserData = (object) => {
 //   });
 // };
 
-
 export const getCurrentUser = (setCurrentUser) => {
   const currEmail = localStorage.getItem("userEmail");
 
@@ -68,13 +69,9 @@ export const getCurrentUser = (setCurrentUser) => {
     return;
   }
 
-
-
   const userQuery = query(userRef, where("email", "==", currEmail));
 
   return onSnapshot(userQuery, (response) => {
-
-
     if (!response.empty) {
       const userData = response.docs[0].data();
       setCurrentUser({ ...userData, id: response.docs[0].id });
@@ -86,9 +83,7 @@ export const getCurrentUser = (setCurrentUser) => {
 };
 
 export const editProfile = (userID, payLoad) => {
-
   let userToEdit = doc(userRef, userID);
-
 
   updateDoc(userToEdit, payLoad)
     .then(() => {
@@ -100,17 +95,12 @@ export const editProfile = (userID, payLoad) => {
 };
 
 export const getSingleStatus = (setAllStatus, email) => {
-
   const singlePostQuery = query(postsRef, where("userEmail", "==", email));
 
-
-
   onSnapshot(singlePostQuery, (response) => {
-
     setAllStatus(
       response.docs.map((docs) => {
-
-        console.log("data" , docs.data())
+        console.log("data", docs.data());
         return { ...docs.data(), id: docs.id };
       })
     );
@@ -128,33 +118,71 @@ export const getSingleUser = (setCurrentUser, email) => {
   });
 };
 
-
-
-export const likePost = async (userId, postId) => {
+export const likePost = async (userId, postId, liked) => {
   console.log("likePost called with:", { userId, postId });
 
   try {
     const docToLike = doc(likeRef, `${userId}_${postId}`);
-    await setDoc(docToLike, { userId, postId, likedAt: new Date().toISOString() });
+    if (liked) {
+      deleteDoc(docToLike);
+    } else {
+      await setDoc(docToLike, {
+        userId,
+        postId,
+        likedAt: new Date().toISOString(),
+      });
+    }
     console.log("like saved:", `${userId}_${postId}`);
   } catch (err) {
     console.error("Error saving like:", err);
   }
 };
 
-
-export const getLikesByUser = (userId , postId , setliked  , setlikesCount) => {
+export const getLikesByUser = (userId, postId, setliked, setlikesCount) => {
   try {
-    let likeQuery = query(likeRef , where('postId' , '==' , postId))
-    onSnapshot(likeQuery , (response) => {
+    let likeQuery = query(likeRef, where("postId", "==", postId));
+    onSnapshot(likeQuery, (response) => {
       let likes = response.docs.map((doc) => doc.data());
       let likesCount = likes.length;
 
-      const isLiked = likes.some((like)=> like.id === userId )
+      const isLiked = likes.some((like) => like.userId === userId);
       setlikesCount(likesCount);
       setliked(isLiked);
-    })
+    });
   } catch (err) {
     console.log(err);
-}
-}
+  }
+};
+
+export const postComment = (postId, comment, timeStamp , name) => {
+  try {
+    addDoc(commentRef, {
+      postId,
+      comment,
+      timeStamp,
+      name,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getComments = (postId , setcomments) => {
+  try {
+    let SinglePostQuery = query(commentRef, where("postId", "==", postId));
+    onSnapshot(SinglePostQuery, (response) => {
+      const comments = response.docs.map((doc) => {
+        return {
+          id: doc.id,
+          ...doc.data(),
+        };
+      });
+
+      setcomments(comments);
+
+
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};

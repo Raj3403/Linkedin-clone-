@@ -34,7 +34,7 @@ function PostsCard({ posts, id }) {
       <p className="timestamp">{posts.timeStamp}</p>
       <p className="status">{posts.status}</p>
 
-      <LikeButton userId={currentUser?.id} postId={posts.postID || posts.id || posts.postID} />
+      <LikeButton userId={currentUser?.id} postId={posts.postID || posts.id || posts.postID} currentUser={currentUser} />
     </div>
   );
 }

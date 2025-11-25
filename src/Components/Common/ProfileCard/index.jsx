@@ -5,6 +5,7 @@ import "./index.scss";
 import PostsCard from "../PostsCard";
 import { useLocation } from "react-router-dom";
 import { getUniqueId } from "../../../helpers/getUniqueId";
+import { UploadImage as uploadImageApi } from "../../../api/ImageUpload";
 
 export default function ProfileCard({ onEdit, currentUser }) {
   const location = useLocation();
@@ -30,6 +31,15 @@ export default function ProfileCard({ onEdit, currentUser }) {
   const [currentProfile, setCurrentProfile] = useState(
     normalizeProfile(currentUser)
   );
+  const [currentImage , setcurrentImage] = useState({});
+
+  const getImage =(event) =>{
+      setcurrentImage(event.target.files[0]);
+  }
+
+  const uploadImage = () =>{
+    uploadImageApi(currentImage)
+  }
 
   /* WATCH FIRESTORE DATA */
   useEffect(() => {
@@ -49,6 +59,8 @@ export default function ProfileCard({ onEdit, currentUser }) {
   return (
     <>
       <div className="profile-card">
+        <input type={"file"} onChange={getImage} />
+        <button onClick={uploadImage}>Upload</button>
         <div className="edit-btn">
           <HiOutlinePencil className="edit-icon" onClick={onEdit} />
         </div>
