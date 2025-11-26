@@ -35,10 +35,12 @@ export default function ProfileCard({ onEdit, currentUser }) {
   );
   const [currentImage, setcurrentImage] = useState({});
   // const [ImageLink, setImageLink] = useState("");
+  // const[modalopen , setmodalopen] = useState(false);
 
   const getImage = (event) => {
     setcurrentImage(event.target.files[0]);
   };
+
 
   const uploadImage = () => {
     uploadImageApi(currentImage, currentUser.id);
