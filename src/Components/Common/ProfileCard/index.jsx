@@ -44,7 +44,6 @@ export default function ProfileCard({ onEdit, currentUser }) {
     uploadImageApi(currentImage, currentUser.id);
   };
 
-  /* WATCH FIRESTORE DATA */
   useEffect(() => {
     if (!location?.state?.email) return;
 
