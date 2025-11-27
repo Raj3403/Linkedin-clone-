@@ -2,12 +2,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 60px;
+    height: auto;
+    flex-direction: column;
 
     label{
         border: 1px solid #212121;
         padding: 10px;
         cursor: pointer;
         font-family: system-ui, sans-serif;
+    }
+
+    .progress-bar{
+        padding: 20px;
     }
 }
