@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
-import {
-  getSingleStatus,
-  getSingleUser,
-} from "../../../api/FirestoreAPI"; 
+import { getSingleStatus, getSingleUser } from "../../../api/FirestoreAPI";
 import { HiOutlinePencil } from "react-icons/hi";
 import "./index.scss";
 import PostsCard from "../PostsCard";
 import { useLocation } from "react-router-dom";
 import { getUniqueId } from "../../../helpers/getUniqueId";
 import { UploadImage as uploadImageApi } from "../../../api/ImageUpload";
+import FileUploadModal from "../FileUploadModal";
 
 export default function ProfileCard({ onEdit, currentUser }) {
   const location = useLocation();
@@ -35,12 +33,11 @@ export default function ProfileCard({ onEdit, currentUser }) {
   );
   const [currentImage, setcurrentImage] = useState({});
   // const [ImageLink, setImageLink] = useState("");
-  // const[modalopen , setmodalopen] = useState(false);
+  const [modalopen, setmodalopen] = useState(false);
 
   const getImage = (event) => {
     setcurrentImage(event.target.files[0]);
   };
-
 
   const uploadImage = () => {
     uploadImageApi(currentImage, currentUser.id);
@@ -60,28 +57,28 @@ export default function ProfileCard({ onEdit, currentUser }) {
     }, email);
   });
 
-  // ❌ This caused "updateDoc() called with invalid data (undefined)" because
-  // you were calling editProfile with only the id and no data object.
-  // ProfileCard should not update Firestore automatically like this.
-  //
-  // useEffect(() => {
-  //   if (currentUser?.id) {
-  //     editProfile(currentUser.id);
-  //   }
-  // }, [currentUser]);
-
   return (
     <>
+      <FileUploadModal
+        getImage={getImage}
+        uploadImage={uploadImage}
+        modalopen={modalopen}
+        setmodalopen={setmodalopen}
+        currentImage={currentImage}
+      />
       <div className="profile-card">
-        <input type={"file"} onChange={getImage} />
-        <button onClick={uploadImage}>Upload</button>
         <div className="edit-btn">
           <HiOutlinePencil className="edit-icon" onClick={onEdit} />
         </div>
 
         <div className="profile-info">
-          <div> 
-            <img className="profile-image" src={currentUser?.imageLink} alt="profile-image" />
+          <div>
+            <img
+              className="profile-image"
+              onClick={()=> setmodalopen(true)}
+              src={currentUser?.imageLink}
+              alt="profile-image"
+            />
             {/* NAME */}
             <h3 className="userName">{currentProfile.name}</h3>
 

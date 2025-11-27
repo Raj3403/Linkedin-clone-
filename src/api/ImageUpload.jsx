@@ -33,4 +33,5 @@ export const UploadImage = (file, id) => {
     .catch((error) => {
       console.error("UploadImage error:", error);
     });
+    
 };
