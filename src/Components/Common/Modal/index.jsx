@@ -2,18 +2,37 @@ import React from "react";
 import { Modal, Button } from "antd";
 import "./index.scss";
 
-const ModalComponent = ({ modalOpen, setModalOpen, SetStatus , sendStatus ,  status}) => {
+const ModalComponent = ({
+  modalOpen,
+  setModalOpen,
+  SetStatus,
+  sendStatus,
+  status,
+  isEdit,
+  updateStatus,
+}) => {
   return (
     <>
       <Modal
         title="Create a Post"
         centered
         open={modalOpen}
-        onOk={() => setModalOpen(false)}
-        onCancel={() => setModalOpen(false)}
+        onOk={() => {
+          SetStatus("");
+          setModalOpen(false);
+        }}
+        onCancel={() => {
+          SetStatus("");
+          setModalOpen(false);
+        }}
         footer={[
-          <Button onClick={sendStatus} key="submit" type="primary" disabled = {status.length >0 ? false : true}>
-            Post
+          <Button
+            onClick={isEdit ? updateStatus : sendStatus}
+            key="submit"
+            type="primary"
+            disabled={status.length > 0 ? false : true}
+          >
+            { isEdit ? "Update" :  "Post"}
           </Button>,
         ]}
       >

@@ -6,16 +6,18 @@
   border: 1px solid #b7b7b7;
   border-radius: 7px;
   display: flex;
-  // align-items: center;
   flex-direction: column;
-  // justify-content: center;
   padding-bottom: 20px;
-.post-image-wrapper{
-  display: flex;
-  padding: 15px;
-  gap: 10px;
-}
-  .post-image{
+  position: relative; // ✅ make card a positioning context
+
+  .post-image-wrapper {
+    display: flex;
+    padding: 15px;
+    gap: 10px;
+    position: relative; // ✅ so icons stay near image area
+  }
+
+  .post-image {
     width: 70px;
     height: 70px;
     border-radius: 50%;
@@ -26,8 +28,7 @@
     font-family: system-ui, sans-serif;
     font-weight: 600;
     font-size: 18px;
-    color:#212121;
-    // padding: 20px;
+    color: #212121;
     margin: 0px 0 0 0px;
     cursor: pointer;
   }
@@ -37,17 +38,58 @@
     font-weight: 400;
     font-size: 12px;
     color: rgba(0, 0, 0, 0.6);
-    // padding: 20px;
     margin: 0px 0 0 0px;
   }
 
   .status {
     text-align: left;
-    // padding: 20px;
     margin: 10px 0 0 10px;
     font-family: Inter, sans-serif;
     font-size: 18px;
     font-weight: 400;
     color: rgba(0, 0, 0, 0.9);
+  }
+
+  // ✅ icons stay inside this card, top–right
+  // .action-container {
+  //   position: absolute;
+  //   top: 10px;
+  //   right: 20px;
+  //   display: flex;
+  // }
+
+  // .action-container .action-icon,
+  // .action-container .action {
+  //   cursor: pointer;
+  //  color: #474747;
+  //  padding: 10px;
+  // }
+
+  // .action-container .action-icon:hover,
+  // .action-container .action:hover {
+  //  color: #000000;
+  //  background-color: #b7b7b7;
+  //  padding: 10px;
+  //  border-radius: 50%;
+  // }
+
+  .action-container{
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    display: flex;
+    cursor: pointer;
+
+    .action-icon{
+      color: #474747;
+      padding: 10px;
+    }
+
+    .action-icon:hover{
+      color: #000000;
+      background-color: #b7b7b7;
+      padding: 10px;
+      border-radius: 50%;
+    }
   }
 }

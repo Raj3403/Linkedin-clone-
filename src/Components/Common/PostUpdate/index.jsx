@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ModalComponent from "../Modal";
-import { postStatus, getStatus } from "../../../api/FirestoreAPI";
+import { postStatus, getStatus , updatePost } from "../../../api/FirestoreAPI";
 import PostsCard from "../PostsCard";
 import { getCurrentTimeStamp } from "../../../helpers/useMoment";
 import { getUniqueId } from "../../../helpers/getUniqueId";
@@ -11,9 +11,15 @@ export default function PostStatus({ currentUser = {} }) {
   const userNameFromStorage = localStorage.getItem("userName") || "";
   const [modalOpen, setModalOpen] = useState(false);
   const [status, SetStatus] = useState("");
+  const [currentPost , setCurrentPost] = useState({});
   const [allStatuses, setAllStatus] = useState([]);
   const userEmail = userEmailFromStorage || currentUser?.email || "";
-  const userName = currentUser?.name || currentUser?.displayName || userNameFromStorage || "Unknown User";
+  const userName =
+    currentUser?.name ||
+    currentUser?.displayName ||
+    userNameFromStorage ||
+    "Unknown User";
+  const [isEdit, setIsEdit] = useState(false);
 
   const sendStatus = async () => {
     if (!status || status.trim() === "") {
@@ -24,8 +30,8 @@ export default function PostStatus({ currentUser = {} }) {
     // create an object with a consistent `id` and also keep `postID` if backend uses that
     const id = getUniqueId();
     const object = {
-      id,                 // consistent id field
-      postID: id,         // keep this if other code expects postID
+      id, // consistent id field
+      postID: id, // keep this if other code expects postID
       status: status.trim(),
       timeStamp: getCurrentTimeStamp("LLL"),
       userEmail: userEmail,
@@ -37,12 +43,28 @@ export default function PostStatus({ currentUser = {} }) {
       await postStatus(object);
       SetStatus("");
       setModalOpen(false);
+      setIsEdit(false);
       // re-fetch statuses (or optimistically add)
       getStatus(setAllStatus);
+
     } catch (err) {
       console.error("Failed to post status:", err);
     }
   };
+
+  const getEditData = (posts) => {
+    setModalOpen(true);
+    SetStatus(posts?.status);
+    setCurrentPost(posts);
+    setIsEdit(true);
+  };
+
+  const updateStatus = () =>{
+    console.log(status);
+    setModalOpen(false);
+    updatePost(currentPost.id , status);
+    setModalOpen(false);
+  }
 
   useEffect(() => {
     // subscribe or fetch statuses
@@ -53,7 +75,13 @@ export default function PostStatus({ currentUser = {} }) {
   return (
     <div className="post-status-main">
       <div className="post-status">
-        <button className="open-post-modal" onClick={() => setModalOpen(true)}>
+        <button
+          className="open-post-modal"
+          onClick={() => {
+            setModalOpen(true);
+            setIsEdit(false);
+          }}
+        >
           Start a Post
         </button>
       </div>
@@ -64,12 +92,21 @@ export default function PostStatus({ currentUser = {} }) {
         sendStatus={sendStatus}
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
+        isEdit={isEdit}
+        updateStatus={updateStatus}
       />
 
       <div>
         {allStatuses.map((posts) => {
-          const keyId = posts.postID || posts.id || posts._id || posts.documentId;
-          return <PostsCard key={keyId || getUniqueId()} posts={posts} />;
+          const keyId =
+            posts.postID || posts.id || posts._id || posts.documentId;
+          return (
+            <PostsCard
+              key={keyId || getUniqueId()}
+              posts={posts}
+              getEditData={getEditData}
+            />
+          );
         })}
       </div>
     </div>

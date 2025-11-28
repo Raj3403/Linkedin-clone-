@@ -56,23 +56,6 @@ export const postUserData = (object) => {
       console.log(err);
     });
 };
-
-// export const getCurrentUser = (setCurrentUser) => {
-//   let currEmail = localStorage.getItem("userEmail");
-
-//   onSnapshot(userRef, (response) => {
-//     setCurrentUser(
-//       response.docs
-//         .map((docs) => {
-//           return { ...docs.data(), id: docs.id };
-//         })
-//         .filter((item) => {
-//           return item.email === localStorage.getItem("userEmail");
-//         })[0]
-//     );
-//   });
-// };
-
 export const getCurrentUser = (setCurrentUser) => {
   const currEmail = localStorage.getItem("userEmail");
 
@@ -198,3 +181,15 @@ export const getComments = (postId , setcomments) => {
     console.log(err);
   }
 };
+
+
+export const updatePost = (id , status) =>{
+ let docToUpdate = doc(postsRef , id );
+
+  try{
+    updateDoc(docToUpdate , {status})
+  }
+  catch(err){
+    console.log(err);
+  }
+}
