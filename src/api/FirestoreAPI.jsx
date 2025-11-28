@@ -188,8 +188,24 @@ export const updatePost = (id , status) =>{
 
   try{
     updateDoc(docToUpdate , {status})
+          toast.success("Post has been Updated!");
+
   }
   catch(err){
     console.log(err);
   }
 }
+
+
+export const deletePost = (id) =>{
+  let docToDelete = doc(postsRef , id);
+    try{
+    deleteDoc(docToDelete);
+    toast.success("Post has been Deleted!");
+
+  }
+  catch(err){
+    console.log(err);
+  }
+
+ }

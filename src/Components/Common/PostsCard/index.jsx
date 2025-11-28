@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import LikeButton from "../LikeButton";
 import { useNavigate } from "react-router-dom";
 import { BsPencil , BsTrash } from "react-icons/bs"
-import { getCurrentUser, getAllUsers } from "../../../api/FirestoreAPI";
+import { getCurrentUser, getAllUsers , deletePost } from "../../../api/FirestoreAPI";
 import "./index.scss";
 
 function PostsCard({ posts, id , getEditData }) {
@@ -32,7 +32,7 @@ function PostsCard({ posts, id , getEditData }) {
       <div className="post-image-wrapper">
         { currentUser.id === posts.userID ?  <div className="action-container">
           <BsPencil size={20} className="action-icon" onClick={()=> getEditData(posts)} />
-          <BsTrash size={20} className="action-icon"/>
+          <BsTrash size={20} className="action-icon" onClick={()=>deletePost(posts.id)}/>
         </div>: <></> }
         <img
           className="post-image"

@@ -74,6 +74,7 @@ export default function PostStatus({ currentUser = {} }) {
 
   return (
     <div className="post-status-main">
+      <div className="user-details"></div>
       <div className="post-status">
         <button
           className="open-post-modal"

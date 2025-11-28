@@ -4,6 +4,15 @@
     align-items: center;
     flex-direction: column;
 
+    .user-details{
+       width: 550px;
+    height: 180px;
+    background-color: whitesmoke;
+    margin-top: 30px;
+    border: 1px solid #b7b7b7;
+    border-radius: 7px;
+    }
+
 
     .post-status{
     width: 550px;
