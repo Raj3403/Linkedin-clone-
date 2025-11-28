@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import LikeButton from "../LikeButton";
 import { useNavigate } from "react-router-dom";
-import { BsPencil , BsTrash } from "react-icons/bs"
-import { getCurrentUser, getAllUsers , deletePost } from "../../../api/FirestoreAPI";
+import { BsPencil, BsTrash } from "react-icons/bs";
+import {
+  getCurrentUser,
+  getAllUsers,
+  deletePost,
+} from "../../../api/FirestoreAPI";
 import "./index.scss";
 
-function PostsCard({ posts, id , getEditData }) {
+function PostsCard({ posts, id, getEditData }) {
   let navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState({});
   const [allUsers, setAllUsers] = useState([]);
@@ -26,14 +30,25 @@ function PostsCard({ posts, id , getEditData }) {
 
   // console.log(currentUser.id);
   // console.log(posts.userID);
-
   return (
     <div className="posts-card" key={id}>
       <div className="post-image-wrapper">
-        { currentUser.id === posts.userID ?  <div className="action-container">
-          <BsPencil size={20} className="action-icon" onClick={()=> getEditData(posts)} />
-          <BsTrash size={20} className="action-icon" onClick={()=>deletePost(posts.id)}/>
-        </div>: <></> }
+        {currentUser.id === posts.userID ? (
+          <div className="action-container">
+            <BsPencil
+              size={20}
+              className="action-icon"
+              onClick={() => getEditData(posts)}
+            />
+            <BsTrash
+              size={20}
+              className="action-icon"
+              onClick={() => deletePost(posts.id)}
+            />
+          </div>
+        ) : (
+          <></>
+        )}
         <img
           className="post-image"
           alt="profile-image"
@@ -46,8 +61,12 @@ function PostsCard({ posts, id , getEditData }) {
         />
         <div>
           <p className="name" onClick={handleOpenProfile}>
-            {posts.userName}
+            {allUsers.filter((user) => user.id === posts.userID)[0]?.name}
           </p>
+          <p className="headline">
+            {allUsers.filter((user) => user.id === posts.userID)[0]?.headline}
+          </p>
+
           <p className="timestamp">{posts.timeStamp}</p>
         </div>
       </div>
