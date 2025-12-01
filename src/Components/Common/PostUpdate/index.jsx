@@ -107,8 +107,9 @@ export default function PostStatus({ currentUser = {} }) {
         setModalOpen={setModalOpen}
         isEdit={isEdit}
         updateStatus={updateStatus}
+        imageUrl={postImage}
         UploadPostImage={UploadPostImage}
-        
+
         setPostImage={setPostImage}
       />
 

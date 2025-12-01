@@ -13,6 +13,7 @@ const ModalComponent = ({
   updateStatus,
   UploadPostImage,
   setPostImage,
+ imageUrl,
 }) => {
   return (
     <>
@@ -47,6 +48,7 @@ const ModalComponent = ({
           onChange={(event) => SetStatus(event.target.value)}
           value={status}
         />
+        {imageUrl?.length >0 ?  <img  className="preview-image" src={imageUrl} alt="imageUrl" /> : <></>}
         <label htmlFor="pic-upload"><AiOutlinePicture size={35} className="picture-icon"/> </label>
         <input type={"file"} id="pic-upload"  hidden  onChange={(event) => UploadPostImage(event.target.files[0] , setPostImage)}/>
       </Modal>
