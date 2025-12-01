@@ -13,6 +13,8 @@ export default function PostStatus({ currentUser = {} }) {
   const [status, SetStatus] = useState("");
   const [currentPost , setCurrentPost] = useState({});
   const [allStatuses, setAllStatus] = useState([]);
+  const [currentImage , setCurrentImage] = useState({});
+  console.log(currentImage);
   
   const userEmail = userEmailFromStorage || currentUser?.email || "";
   const userName =
@@ -104,6 +106,7 @@ export default function PostStatus({ currentUser = {} }) {
         setModalOpen={setModalOpen}
         isEdit={isEdit}
         updateStatus={updateStatus}
+        setCurrentImage={setCurrentImage}
       />
 
       <div>

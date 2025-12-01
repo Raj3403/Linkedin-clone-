@@ -11,6 +11,7 @@ const ModalComponent = ({
   status,
   isEdit,
   updateStatus,
+  setCurrentImage,
 }) => {
   return (
     <>
@@ -46,7 +47,7 @@ const ModalComponent = ({
           value={status}
         />
         <label htmlFor="pic-upload"><AiOutlinePicture size={35} className="picture-icon"/> </label>
-        <input type={"file"} id="pic-upload"  hidden/>
+        <input type={"file"} id="pic-upload"  hidden  onChange={(event) => setCurrentImage(event.target.files[0])}/>
       </Modal>
     </>
   );
