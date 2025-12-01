@@ -6,13 +6,15 @@ import {
   getCurrentUser,
   getAllUsers,
   deletePost,
+  getConnections,
 } from "../../../api/FirestoreAPI";
 import "./index.scss";
 
-function PostsCard({ posts, id, getEditData }) {
+export default function PostsCard({ posts, id, getEditData }) {
   let navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState({});
   const [allUsers, setAllUsers] = useState([]);
+  const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
     getCurrentUser(setCurrentUser);
@@ -28,9 +30,12 @@ function PostsCard({ posts, id, getEditData }) {
     });
   };
 
+  useEffect(() => {
+    getConnections(currentUser.id, posts.userID, setIsConnected);
+  }, [currentUser.id, posts.userID]);
   // console.log(currentUser.id);
   // console.log(posts.userID);
-  return (
+  return isConnected ? (
     <div className="posts-card" key={id}>
       <div className="post-image-wrapper">
         {currentUser.id === posts.userID ? (
@@ -79,7 +84,7 @@ function PostsCard({ posts, id, getEditData }) {
         currentUser={currentUser}
       />
     </div>
+  ) : (
+    <></>
   );
 }
-
-export default PostsCard;

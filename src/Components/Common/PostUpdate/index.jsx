@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ModalComponent from "../Modal";
-import { postStatus, getStatus , updatePost } from "../../../api/FirestoreAPI";
+import { postStatus, getStatus , updatePost} from "../../../api/FirestoreAPI";
 import PostsCard from "../PostsCard";
 import { getCurrentTimeStamp } from "../../../helpers/useMoment";
 import { getUniqueId } from "../../../helpers/getUniqueId";
@@ -13,6 +13,7 @@ export default function PostStatus({ currentUser = {} }) {
   const [status, SetStatus] = useState("");
   const [currentPost , setCurrentPost] = useState({});
   const [allStatuses, setAllStatus] = useState([]);
+  
   const userEmail = userEmailFromStorage || currentUser?.email || "";
   const userName =
     currentUser?.name ||
@@ -71,6 +72,7 @@ export default function PostStatus({ currentUser = {} }) {
     getStatus(setAllStatus);
     // if getStatus returns an unsubscribe, return it
   }, []);
+
 
 
   return (

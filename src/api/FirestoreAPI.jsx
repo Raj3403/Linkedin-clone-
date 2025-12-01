@@ -17,6 +17,7 @@ let postsRef = collection(firestore, "posts");
 let userRef = collection(firestore, "users");
 let likeRef = collection(firestore, "likes");
 let commentRef = collection(firestore, "comments");
+let connectionRef = collection(firestore , "connections");
 
 export const postStatus = (object) => {
   addDoc(dbRef, object)
@@ -37,7 +38,7 @@ export const getStatus = (setAllStatus) => {
   });
 };
 
-export const getAllUsers= (setAllUsers) => {
+export const getAllUsers = (setAllUsers) => {
   onSnapshot(userRef, (response) => {
     setAllUsers(
       response.docs.map((docs) => {
@@ -46,8 +47,6 @@ export const getAllUsers= (setAllUsers) => {
     );
   });
 };
-
-
 
 export const postUserData = (object) => {
   addDoc(userRef, object)
@@ -149,7 +148,7 @@ export const getLikesByUser = (userId, postId, setliked, setlikesCount) => {
   }
 };
 
-export const postComment = (postId, comment, timeStamp , name) => {
+export const postComment = (postId, comment, timeStamp, name) => {
   try {
     addDoc(commentRef, {
       postId,
@@ -162,7 +161,7 @@ export const postComment = (postId, comment, timeStamp , name) => {
   }
 };
 
-export const getComments = (postId , setcomments) => {
+export const getComments = (postId, setcomments) => {
   try {
     let SinglePostQuery = query(commentRef, where("postId", "==", postId));
     onSnapshot(SinglePostQuery, (response) => {
@@ -174,38 +173,62 @@ export const getComments = (postId , setcomments) => {
       });
 
       setcomments(comments);
-
-
     });
   } catch (err) {
     console.log(err);
   }
 };
 
+export const updatePost = (id, status) => {
+  let docToUpdate = doc(postsRef, id);
 
-export const updatePost = (id , status) =>{
- let docToUpdate = doc(postsRef , id );
-
-  try{
-    updateDoc(docToUpdate , {status})
-          toast.success("Post has been Updated!");
-
-  }
-  catch(err){
+  try {
+    updateDoc(docToUpdate, { status });
+    toast.success("Post has been Updated!");
+  } catch (err) {
     console.log(err);
   }
-}
+};
 
-
-export const deletePost = (id) =>{
-  let docToDelete = doc(postsRef , id);
-    try{
+export const deletePost = (id) => {
+  let docToDelete = doc(postsRef, id);
+  try {
     deleteDoc(docToDelete);
     toast.success("Post has been Deleted!");
-
-  }
-  catch(err){
+  } catch (err) {
     console.log(err);
   }
+};
 
- }
+export const addConnection = async (userId, targetId) => {
+  console.log("likePost called with:", { userId, targetId });
+
+  try {
+    let connectionToAdd = doc(connectionRef, `${userId}_${targetId}`);
+    setDoc(connectionToAdd, {
+      userId,
+      targetId,
+    });
+        toast.success("Connection Added!");
+
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+
+
+export const getConnections = (userId, targetId , setIsConnected) => {
+  try {
+    let connectionsQuery = query(connectionRef, where("targetId", "==", targetId));
+    onSnapshot(connectionsQuery, (response) => {
+      let connections = response.docs.map((doc) => doc.data());
+
+      const isConnected = connections.some((connection) => connection.userId === userId);
+      setIsConnected(isConnected);
+
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
