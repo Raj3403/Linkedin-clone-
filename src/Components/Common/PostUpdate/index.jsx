@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ModalComponent from "../Modal";
 import { postStatus, getStatus , updatePost} from "../../../api/FirestoreAPI";
 import PostsCard from "../PostsCard";
+import { UploadPostImage } from "../../../api/ImageUpload";
 import { getCurrentTimeStamp } from "../../../helpers/useMoment";
 import { getUniqueId } from "../../../helpers/getUniqueId";
 import "./index.scss";
@@ -13,8 +14,8 @@ export default function PostStatus({ currentUser = {} }) {
   const [status, SetStatus] = useState("");
   const [currentPost , setCurrentPost] = useState({});
   const [allStatuses, setAllStatus] = useState([]);
-  const [currentImage , setCurrentImage] = useState({});
-  console.log(currentImage);
+  const [postImage , setPostImage] = useState('');
+  console.log(postImage);  
   
   const userEmail = userEmailFromStorage || currentUser?.email || "";
   const userName =
@@ -106,7 +107,9 @@ export default function PostStatus({ currentUser = {} }) {
         setModalOpen={setModalOpen}
         isEdit={isEdit}
         updateStatus={updateStatus}
-        setCurrentImage={setCurrentImage}
+        UploadPostImage={UploadPostImage}
+        
+        setPostImage={setPostImage}
       />
 
       <div>
