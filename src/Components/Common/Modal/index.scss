@@ -6,4 +6,11 @@
     font-size: 16px;
     font-family: system-ui, sans-serif;
     width: 100%;
+    resize: none;
+}
+.picture-icon{
+    color: #0073b1;
+    cursor: pointer;
+    position: absolute;
+    bottom: 20px;
 }
