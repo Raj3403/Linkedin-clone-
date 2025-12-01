@@ -27,6 +27,15 @@ export default function Topbar() {
     Navigate(route, options);
   };
 
+  const openUser = (user) => {
+    Navigate("/profile", {
+      state: {
+        id: user.userID,
+        email: user.email,
+      },
+    });
+  };
+
   const handleSearch = () => {
     if (searchInput !== "") {
       let searched = users.filter((user) => {
@@ -107,7 +116,7 @@ export default function Topbar() {
             <div className="search-inner">No Results Found..</div>
           ) : (
             filteredUsers.map((user) => (
-              <div className="search-inner">
+              <div className="search-inner" onClick={() => openUser(user)}>
                 <img src={user.imageLink} />
                 <p className="name">{user.name}</p>
               </div>
