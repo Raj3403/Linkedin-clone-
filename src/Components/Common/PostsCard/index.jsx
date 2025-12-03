@@ -35,7 +35,7 @@ export default function PostsCard({ posts, id, getEditData }) {
   }, [currentUser.id, posts.userID]);
   // console.log(currentUser.id);
   // console.log(posts.userID);
-  return isConnected ? (
+  return isConnected  || currentUser.id === posts.userID ? (
     <div className="posts-card" key={id}>
       <div className="post-image-wrapper">
         {currentUser.id === posts.userID ? (
@@ -75,6 +75,7 @@ export default function PostsCard({ posts, id, getEditData }) {
           <p className="timestamp">{posts.timeStamp}</p>
         </div>
       </div>
+      {posts.postImage ? <img src={posts.postImage} alt="post-image"/> : <></>}
 
       <p className="status">{posts.status}</p>
 

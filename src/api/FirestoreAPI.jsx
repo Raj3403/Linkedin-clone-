@@ -179,11 +179,11 @@ export const getComments = (postId, setcomments) => {
   }
 };
 
-export const updatePost = (id, status) => {
+export const updatePost = (id, status , postImage) => {
   let docToUpdate = doc(postsRef, id);
 
   try {
-    updateDoc(docToUpdate, { status });
+    updateDoc(docToUpdate, { status , postImage});
     toast.success("Post has been Updated!");
   } catch (err) {
     console.log(err);

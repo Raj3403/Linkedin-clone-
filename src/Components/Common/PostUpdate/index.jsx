@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ModalComponent from "../Modal";
-import { postStatus, getStatus , updatePost} from "../../../api/FirestoreAPI";
+import { postStatus, getStatus, updatePost } from "../../../api/FirestoreAPI";
 import PostsCard from "../PostsCard";
 import { UploadPostImage } from "../../../api/ImageUpload";
 import { getCurrentTimeStamp } from "../../../helpers/useMoment";
@@ -12,18 +12,40 @@ export default function PostStatus({ currentUser = {} }) {
   const userNameFromStorage = localStorage.getItem("userName") || "";
   const [modalOpen, setModalOpen] = useState(false);
   const [status, SetStatus] = useState("");
-  const [currentPost , setCurrentPost] = useState({});
+  const [currentPost, setCurrentPost] = useState({});
   const [allStatuses, setAllStatus] = useState([]);
-  const [postImage , setPostImage] = useState('');
-  console.log(postImage);  
-  
+  const [postImage, setPostImage] = useState("");
+  const [isEdit, setIsEdit] = useState(false);
+
   const userEmail = userEmailFromStorage || currentUser?.email || "";
   const userName =
     currentUser?.name ||
     currentUser?.displayName ||
     userNameFromStorage ||
     "Unknown User";
-  const [isEdit, setIsEdit] = useState(false);
+
+  // Fetch statuses
+  useEffect(() => {
+    getStatus(setAllStatus);
+  }, []);
+
+  // Start a fresh post: clear previous edit values
+  const openCreateModal = () => {
+    SetStatus("");
+    setPostImage("");
+    setCurrentPost({});
+    setIsEdit(false);
+    setModalOpen(true);
+  };
+
+  // Prepare modal for edit and populate fields
+  const getEditData = (post) => {
+    setCurrentPost(post || {});
+    SetStatus(post?.status || "");
+    setPostImage(post?.postImage || "");
+    setIsEdit(true);
+    setModalOpen(true);
+  };
 
   const sendStatus = async () => {
     if (!status || status.trim() === "") {
@@ -31,69 +53,72 @@ export default function PostStatus({ currentUser = {} }) {
       return;
     }
 
-    // create an object with a consistent `id` and also keep `postID` if backend uses that
     const id = getUniqueId();
     const object = {
-      id, // consistent id field
-      postID: id, // keep this if other code expects postID
+      id,
+      postID: id,
       status: status.trim(),
       timeStamp: getCurrentTimeStamp("LLL"),
       userEmail: userEmail,
       userName: userName,
       userID: currentUser?.id || currentUser?.userID || null,
+      postImage: postImage || "",
     };
 
     try {
       await postStatus(object);
+      // clear local state after successful post
       SetStatus("");
-      setModalOpen(false);
+      setPostImage("");
+      setCurrentPost({});
       setIsEdit(false);
-      // re-fetch statuses (or optimistically add)
-      getStatus(setAllStatus);
+      setModalOpen(false);
 
+      // refresh statuses
+      getStatus(setAllStatus);
     } catch (err) {
       console.error("Failed to post status:", err);
     }
   };
 
-  const getEditData = (posts) => {
-    setModalOpen(true);
-    SetStatus(posts?.status);
-    setCurrentPost(posts);
-    setIsEdit(true);
+  const updateStatusHandler = async () => {
+    if (!currentPost?.id) {
+      console.warn("No post selected for update");
+      return;
+    }
+
+    try {
+      // wait for update to finish
+      await updatePost(currentPost.id, status, postImage || "");
+
+      // clear states after update
+      SetStatus("");
+      setPostImage("");
+      setCurrentPost({});
+      setIsEdit(false);
+      setModalOpen(false);
+
+      // refresh statuses
+      getStatus(setAllStatus);
+    } catch (err) {
+      console.error("Failed to update post:", err);
+    }
   };
-
-  const updateStatus = () =>{
-    console.log(status);
-    setModalOpen(false);
-    updatePost(currentPost.id , status);
-    setModalOpen(false);
-  }
-
-  useEffect(() => {
-    // subscribe or fetch statuses
-    getStatus(setAllStatus);
-    // if getStatus returns an unsubscribe, return it
-  }, []);
-
-
 
   return (
     <div className="post-status-main">
       <div className="user-details">
-        <img  src={currentUser.imageLink} alt="imageLink" />
+        <img src={currentUser.imageLink} alt="imageLink" />
         <p className="name">{currentUser.name}</p>
         <p className="headline">{currentUser.headline}</p>
       </div>
+
       <div className="post-status">
-                <img className="post-image" src={currentUser.imageLink} alt="imageLink" />
+        <img className="post-image" src={currentUser.imageLink} alt="imageLink" />
 
         <button
           className="open-post-modal"
-          onClick={() => {
-            setModalOpen(true);
-            setIsEdit(false);
-          }}
+          onClick={openCreateModal}
         >
           Start a Post
         </button>
@@ -106,11 +131,11 @@ export default function PostStatus({ currentUser = {} }) {
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
         isEdit={isEdit}
-        updateStatus={updateStatus}
-        imageUrl={postImage}
+        updateStatus={updateStatusHandler}
+        imageUrl={isEdit ? (currentPost?.postImage || "") : postImage || ""}
         UploadPostImage={UploadPostImage}
-
         setPostImage={setPostImage}
+        currentPost={currentPost}
       />
 
       <div>
