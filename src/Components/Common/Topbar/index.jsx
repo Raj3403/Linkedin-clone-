@@ -8,14 +8,14 @@ import {
   AiOutlineBell,
 } from "react-icons/ai";
 import { BsBriefcase } from "react-icons/bs";
-import user from "../../../assets/user.png";
+// import user from "../../../assets/user.png";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import SearchUsers from "../SearchUsers";
 import { getAllUsers } from "../../../api/FirestoreAPI";
 import ProfilePopup from "../ProfilePopup";
 
-export default function Topbar() {
+export default function Topbar({ currentUser }) {
   let Navigate = useNavigate();
   const [showPopup, setShowPopup] = useState(false);
   const [isSearch, setIsSearch] = useState(false);
@@ -102,7 +102,7 @@ export default function Topbar() {
 
       <img
         className="user-logo"
-        src={user}
+        src={currentUser?.imageLink}
         alt="user"
         onClick={() => setShowPopup(!showPopup)}
       />

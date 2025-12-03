@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import LikeButton from "../LikeButton";
+import { Button, Modal } from 'antd';
 import { useNavigate } from "react-router-dom";
 import { BsPencil, BsTrash } from "react-icons/bs";
 import {
@@ -15,6 +16,7 @@ export default function PostsCard({ posts, id, getEditData }) {
   const [currentUser, setCurrentUser] = useState({});
   const [allUsers, setAllUsers] = useState([]);
   const [isConnected, setIsConnected] = useState(false);
+  const [imageModal, setImageModal] = useState(false);
 
   useEffect(() => {
     getCurrentUser(setCurrentUser);
@@ -31,14 +33,14 @@ export default function PostsCard({ posts, id, getEditData }) {
   };
 
   useEffect(() => {
-    getConnections(currentUser.id, posts.userID, setIsConnected);
-  }, [currentUser.id, posts.userID]);
+    getConnections(currentUser?.id, posts.userID, setIsConnected);
+  }, [currentUser?.id, posts.userID]);
   // console.log(currentUser.id);
   // console.log(posts.userID);
-  return isConnected  || currentUser.id === posts.userID ? (
+  return isConnected || currentUser?.id === posts.userID ? (
     <div className="posts-card" key={id}>
       <div className="post-image-wrapper">
-        {currentUser.id === posts.userID ? (
+        {currentUser?.id === posts.userID ? (
           <div className="action-container">
             <BsPencil
               size={20}
@@ -55,8 +57,8 @@ export default function PostsCard({ posts, id, getEditData }) {
           <></>
         )}
         <img
-          className="post-image"
-          alt="profile-image"
+          className="profile-image"
+          alt="profile-image" 
           src={
             allUsers
               .filter((item) => item.id === posts.userID)
@@ -75,7 +77,7 @@ export default function PostsCard({ posts, id, getEditData }) {
           <p className="timestamp">{posts.timeStamp}</p>
         </div>
       </div>
-      {posts.postImage ? <img src={posts.postImage} alt="post-image"/> : <></>}
+      {posts.postImage ? <img  onClick={ () => setImageModal(true)} src={posts.postImage} className="post-image" alt="post-image" /> : <></>}
 
       <p className="status">{posts.status}</p>
 
@@ -84,6 +86,13 @@ export default function PostsCard({ posts, id, getEditData }) {
         postId={posts.postID || posts.id || posts.postID}
         currentUser={currentUser}
       />
+      <Modal
+        centered
+        open={imageModal}
+        onOk={() => setImageModal(false)}
+        onCancel={() => setImageModal(false)}
+        footer={[]}
+      ></Modal>
     </div>
   ) : (
     <></>
