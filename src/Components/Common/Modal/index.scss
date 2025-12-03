@@ -1,20 +1,41 @@
-.modal-input{
-    border: none;
-    background-color: white;
-    outline: none;
-    color: black;
-    font-size: 16px;
-    font-family: system-ui, sans-serif;
-    width: 100%;
-    resize: none;
-}
-.picture-icon{
-    color: #0073b1;
-    cursor: pointer;
-    position: absolute;
-    bottom: 20px;
-}
+    .modal-input{
+        border: none;
+        background-color: white;
+        outline: none;
+        color: black;
+        font-size: 16px;
+        font-family: system-ui, sans-serif;
+        width: 100%;
+        resize: none;
+    }
+    .picture-icon{
+        color: #0073b1;
+        cursor: pointer;
+        left: 20px;
+        position: absolute;
+        bottom: 20px;
+    }
 
-.preview-image{
+    .preview-image{
+        width: 100%;
+    }
+
+
+    .upload-progress-container {
+    display: flex;
+    justify-content: center;
+    margin: 15px 0;
+    }
+
+    .preview-image {
     width: 100%;
-}
+    border-radius: 8px;
+    margin-top: 10px;
+    }
+
+    .picture-icon {
+    cursor: pointer;
+    margin-top: 10px;
+    color: #1677ff;
+    }
+                        
