@@ -88,7 +88,7 @@ export default function PostsCard({ posts, id, getEditData }) {
         <></>
       )}
 
-      <p className="status">{posts.status}</p>
+      <div className="status" dangerouslySetInnerHTML={{__html:posts.status}}></div>
 
       <LikeButton
         userId={currentUser?.id}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Modal, Button, Progress } from "antd";
-// import ReactQuill from 'react-quill';
+import ReactQuill from 'react-quill';
 import { AiOutlinePicture } from "react-icons/ai";
 import "./index.scss";
 
@@ -196,14 +196,14 @@ const ModalComponent = ({
         </Button>,
       ]}
     >
-      <textarea
+      {/* <textarea
         rows={3}
         className="modal-input"
         placeholder="What do you want to talk about?"
         onChange={(e) => SetStatus(e.target.value)}
         value={status}
-      />
-      {/* <ReactQuill className="modal-input" theme="snow" value={status} onChange={SetStatus} /> */}
+      /> */}
+      <ReactQuill className="modal-input" placeholder="Share Something Useful..." theme="snow" value={status} onChange={SetStatus} />
 
       {/* IMAGE PREVIEW */}
       {previewUrl ? (
