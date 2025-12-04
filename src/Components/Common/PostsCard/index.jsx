@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import LikeButton from "../LikeButton";
-import { Button, Modal } from 'antd';
+import { Button, Modal } from "antd";
 import { useNavigate } from "react-router-dom";
 import { BsPencil, BsTrash } from "react-icons/bs";
 import {
@@ -58,7 +58,7 @@ export default function PostsCard({ posts, id, getEditData }) {
         )}
         <img
           className="profile-image"
-          alt="profile-image" 
+          alt="profile-image"
           src={
             allUsers
               .filter((item) => item.id === posts.userID)
@@ -77,7 +77,16 @@ export default function PostsCard({ posts, id, getEditData }) {
           <p className="timestamp">{posts.timeStamp}</p>
         </div>
       </div>
-      {posts.postImage ? <img  onClick={ () => setImageModal(true)} src={posts.postImage} className="post-image" alt="post-image" /> : <></>}
+      {posts.postImage ? (
+        <img
+          onClick={() => setImageModal(true)}
+          src={posts.postImage}
+          className="post-image"
+          alt="post-image"
+        />
+      ) : (
+        <></>
+      )}
 
       <p className="status">{posts.status}</p>
 
@@ -92,7 +101,14 @@ export default function PostsCard({ posts, id, getEditData }) {
         onOk={() => setImageModal(false)}
         onCancel={() => setImageModal(false)}
         footer={[]}
-      ></Modal>
+      >
+        <img
+          onClick={() => setImageModal(true)}
+          src={posts.postImage}
+          className="post-image modal"
+          alt="post-image"
+        />
+      </Modal>
     </div>
   ) : (
     <></>
